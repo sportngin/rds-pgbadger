@@ -11,9 +11,11 @@ GEM
       multi_json (~> 1.0)
     multi_json (1.10.1)
     multi_xml (0.5.5)
+    ox (2.1.6)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   aws-sdk-core
+  ox

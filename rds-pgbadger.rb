@@ -2,6 +2,7 @@
 
 require 'optparse'
 require 'yaml'
+require 'ox'
 require 'aws-sdk-core'
 
 options = {}
@@ -10,6 +11,7 @@ OptionParser.new do |opts|
 
     opts.on('-e', '--env NAME', 'Environement name') { |v| options[:env] = v }
     opts.on('-i', '--instance-id NAME', 'RDS instance identifier') { |v| options[:instance_id] = v }
+    opts.on('-d', '--date DATE', 'Filter logs to given date in format YYYY-MM-DD.') { |v| options[:date] = v }
 
 end.parse!
 
@@ -24,7 +26,7 @@ rds = Aws::RDS::Client.new(
   access_key_id: creds[options[:env]]['aws_access_key_id'],
   secret_access_key: creds[options[:env]]['aws_secret_access_key']
 )
-log_files = rds.describe_db_log_files(db_instance_identifier: options[:instance_id], filename_contains: "postgresql")[:describe_db_log_files].map(&:log_file_name)
+log_files = rds.describe_db_log_files(db_instance_identifier: options[:instance_id], filename_contains: "postgresql.log.#{options[:date]}")[:describe_db_log_files].map(&:log_file_name)
 
 dir_name = "#{options[:instance_id]}-#{Time.now.to_i}"
 
