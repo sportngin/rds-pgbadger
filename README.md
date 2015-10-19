@@ -24,15 +24,15 @@ If you do not have a fog file, the AWS SDK will try to use its [regular](https:/
 Execute the Ruby script proving the target environment and RDS instance identifier.
 
 ```
-./rds-pgbadger.rb -e env1 -i my-rds-instance
-``` 
+./rds-pgbadger.rb -e env1 -i my-rds-instance -r eu-central-1
+```
 
 It will download the log files and generate a report in the out folder named after the instance id and a timestamp of when the script executed.
 
 You can additionally filter the retrieved log files by date:
 
 ```
-./rds-pgbadger.rb -e env1 -i my-rds-instance -d 2015-01-13
-``` 
+./rds-pgbadger.rb -e env1 -i my-rds-instance -d 2015-01-13  -r eu-central-1
+```
 
-
+To run pgBadger in parallel mode, add `-p` toggle and this will automatically try use all cores available.
