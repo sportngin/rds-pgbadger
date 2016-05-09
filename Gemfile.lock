@@ -1,16 +1,11 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    aws-sdk-core (2.0.17)
-      builder (~> 3.0)
+    aws-sdk-core (2.3.2)
       jmespath (~> 1.0)
-      multi_json (~> 1.0)
-      multi_xml (~> 0.5)
-    builder (3.2.2)
-    jmespath (1.0.2)
-      multi_json (~> 1.0)
-    multi_json (1.10.1)
-    multi_xml (0.5.5)
+    jmespath (1.2.4)
+      json_pure (>= 1.8.1)
+    json_pure (1.8.3)
     ox (2.1.6)
 
 PLATFORMS
@@ -19,3 +14,6 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-core
   ox
+
+BUNDLED WITH
+   1.12.1

@@ -1,4 +1,6 @@
 out/*
+logs/*
+reports/*
 *.swp
 .idea
 *.iml
