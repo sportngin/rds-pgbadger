@@ -10,7 +10,6 @@ options = {}
 options[:logs_directory] = "logs"
 options[:reports_directory] = "reports"
 options[:parallel] = true
-#options[:incremental] = false
 options[:pgbadger] = 'pgbadger'
 options[:pgbadger_args] = ''
 OptionParser.new do |opts|
@@ -23,7 +22,6 @@ OptionParser.new do |opts|
     opts.on('--logs-directory DIRECTORY', "Download logs to this directory (Default: ./#{options[:logs_directory]})") { |v| options[:logs_directory] = v }
     opts.on('--reports-directory DIRECTORY', "Generate PGBadger report html in this directory (Default: ./#{options[:reports_directory]})") { |v| options[:reports_directory] = v }
     opts.on('-p', '--[no-]parallel', 'Run PGBadger in parallel mode. (Default: true)') { |v| options[:parallel] = v }
-    #opts.on('-I', '--[no-]incremental', 'Run PGBadger in incremental mode. (Default: true if instance''s report .html file exists.)') { |v| options[:incremental] = v }
     opts.on('--view', 'View results in your browser? Useful when running from a workstation. (Default: false)') { |v| options[:view] = true }
     opts.on('--pgbadger /PATH/TO/PGBADGER', 'Path to PGBadger executable') { |v| options[:pgbadger] = v }
     opts.on('--pgbadger-args a,b,c', 'Arguments for PGBadger') { |v| options[:pgbadger_args] = v }
