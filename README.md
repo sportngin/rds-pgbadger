@@ -34,3 +34,9 @@ You can additionally filter the retrieved log files by date:
 ```
 ./rds-pgbadger.rb -e env1 -i my-rds-instance -r us-west-1 -d 2015-01-13
 ```
+
+By default, `rds-pgbadger.rb` will no longer automatically open up a browser window.  To open a browser automatically under OSX and Linux, use the following:
+
+```
+./rds-pgbadger.rb -e env1 -i my-rds-instance -r us-west-1 -b
+```
