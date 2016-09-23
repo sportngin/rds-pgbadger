@@ -12,17 +12,20 @@ OptionParser.new do |opts|
     opts.on('-e', '--env NAME', 'Environement name') { |v| options[:env] = v }
     opts.on('-i', '--instance-id NAME', 'RDS instance identifier') { |v| options[:instance_id] = v }
     opts.on('-d', '--date DATE', 'Filter logs to given date in format YYYY-MM-DD.') { |v| options[:date] = v }
+    opts.on('-r', '--region REGION', 'AWS region the RDS instance is part of') { |v| options[:region] = v }
+    opts.on('-b', '--browse', 'Attempt to open the report in a browser') { |v| options[:browse] = v }
 
 end.parse!
 
 raise OptionParser::MissingArgument.new(:env) if options[:env].nil?
 raise OptionParser::MissingArgument.new(:instance_id) if options[:instance_id].nil?
+raise OptionParser::MissingArgument.new(:region) if options[:instance_id].nil?
 
 creds = YAML.load(File.read(File.expand_path('~/.fog')))
 
 puts "Instantiating RDS client for #{options[:env]} environment."
 rds = Aws::RDS::Client.new(
-  region: 'us-east-1',
+  region: options[:region],
   access_key_id: creds[options[:env]]['aws_access_key_id'],
   secret_access_key: creds[options[:env]]['aws_secret_access_key']
 )
@@ -30,6 +33,7 @@ log_files = rds.describe_db_log_files(db_instance_identifier: options[:instance_
 
 dir_name = "#{options[:instance_id]}-#{Time.now.to_i}"
 
+Dir.mkdir("out") unless File.directory?("out")
 Dir.mkdir("out/#{dir_name}")
 Dir.mkdir("out/#{dir_name}/error")
 log_files.each do |log_file|
@@ -45,6 +49,16 @@ log_files.each do |log_file|
 end
 puts "Generating PG Badger report."
 `pgbadger --prefix "%t:%r:%u@%d:[%p]:" --outfile out/#{dir_name}/#{dir_name}.html out/#{dir_name}/error/*.log.*`
-puts "Opening report out/#{dir_name}/#{dir_name}.html."
-`open out/#{dir_name}/#{dir_name}.html`
 
+if options[:browse]
+  puts "Opening report out/#{dir_name}/#{dir_name}.html."
+
+  case RbConfig::CONFIG['host_os']
+    when /darwin|mac os/i
+      `open out/#{dir_name}/#{dir_name}.html`
+    when /linux/i
+      `xdg-open out/#{dir_name}/#{dir_name}.html`
+  end
+else
+  puts 'Generated: out/#{dir_name}/#{dir_name}.html'
+end
